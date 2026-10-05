@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bot AI Trading Pintar XAUUSD - Gold & USD Intelligence</title>
+  <meta name="description" content="Bot AI Trading Pintar XAUUSD (Gold vs US Dollar) dengan Analisis Teknikal, Fundamental, Scraper Berita Macro, Pembelajaran Mandiri (Self-Learning), dan Risk Management TP/SL Otomatis.">
+  
+  <!-- Google Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Official TradingView Widget CDN -->
+  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-theme">
+
+  <!-- MAIN WRAPPER WITH SIDEBAR LAYOUT -->
+  <div class="app-layout">
+    
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="app-sidebar glass-card">
+      <div class="sidebar-brand">
+        <div class="logo-icon"><i class="fa-solid fa-brain"></i></div>
+        <div class="logo-text">
+          <h2>XAUUSD <span class="gold-gradient">AI TRADER</span></h2>
+          <span class="sub-badge"><i class="fa-solid fa-bolt"></i> TradingView Live Pro</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-menu">
+        <button class="nav-item active" data-target="view-signal">
+          <i class="fa-solid fa-chart-line"></i> <span>Signal & TradingView</span>
+        </button>
+        <button class="nav-item" data-target="view-whatsapp">
+          <i class="fa-brands fa-whatsapp whatsapp-text"></i> <span>WhatsApp Bot AI</span>
+        </button>
+        <button class="nav-item" data-target="view-risk">
+          <i class="fa-solid fa-sliders"></i> <span>Pengaturan TP/SL</span>
+        </button>
+        <button class="nav-item" data-target="view-news">
+          <i class="fa-solid fa-newspaper"></i> <span>Radar Berita Macro</span>
+        </button>
+        <button class="nav-item" data-target="view-learning">
+          <i class="fa-solid fa-graduation-cap"></i> <span>AI Learning Lab</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="ai-mini-card">
+          <span class="mini-label"><i class="fa-solid fa-shield-halved gold-text"></i> Akurasi AI</span>
+          <span class="mini-val gold-text" id="side-winrate">75.0% Win Rate</span>
+          <span class="mini-sub" id="side-trades">24 Trade Teruji</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA WITH MULTI-TAB VIEWS -->
+    <div class="app-main-content">
+      
+      <!-- TOP HEADER NAVBAR -->
+      <header class="top-navbar glass-card">
+        <!-- LIVE MARKET TICKERS -->
+        <div class="market-tickers">
+          <div class="ticker-box">
+            <span class="ticker-label">XAU/USD (Emas Live)</span>
+            <span class="ticker-price" id="live-gold-price">$2,415.50</span>
+            <span class="ticker-change positive" id="live-gold-change">+0.45%</span>
+          </div>
+          <div class="ticker-box">
+            <span class="ticker-label">DXY (US Dollar)</span>
+            <span class="ticker-price" id="live-dxy-price">104.15</span>
+            <span class="ticker-change negative" id="live-dxy-change">-0.20%</span>
+          </div>
+          <div class="ticker-box active-style-ticker">
+            <span class="ticker-label"><i class="fa-solid fa-crosshair gold-text"></i> Gaya Trading Aktif</span>
+            <span class="ticker-price cyan-text" id="live-active-style">⚡ SCALPING (M5/M15)</span>
+          </div>
+          <div class="ticker-box wa-status-ticker">
+            <span class="ticker-label"><i class="fa-brands fa-whatsapp whatsapp-text"></i> WA Bot Status</span>
+            <span class="ticker-price whatsapp-text" id="top-wa-status">Connected (+6281234567890)</span>
+          </div>
+        </div>
+
+        <!-- ACTION BUTTONS -->
+        <div class="header-actions">
+          <button id="btn-refresh" class="btn btn-gold"><i class="fa-solid fa-rotate"></i> Refresh Analisis</button>
+          <button id="btn-open-backtest" class="btn btn-outline"><i class="fa-solid fa-flask"></i> Simulation Lab</button>
+        </div>
+      </header>
+
+      <!-- =================================================================== -->
+      <!-- TAB VIEW 1: SIGNAL & TRADINGVIEW REAL-TIME CHART -->
+      <!-- =================================================================== -->
+      <div class="tab-view active" id="view-signal">
+        <div class="view-grid-signal">
+          
+          <!-- LEFT: OFFICIAL TRADINGVIEW REAL-TIME CHART EMBED -->
+          <div class="card glass-card chart-card">
+            <div class="card-header">
+              <div class="title-group">
+                <h2><i class="fa-solid fa-chart-candlestick gold-text"></i> TradingView Live Advanced Chart XAUUSD</h2>
+                <span class="badge time-badge" id="active-timeframe">H1 (1 Jam)</span>
+              </div>
+              <div class="chart-controls">
+                <button class="tf-btn" data-tf="M5">M5</button>
+                <button class="tf-btn" data-tf="M15">M15</button>
+                <button class="tf-btn active" data-tf="H1">H1</button>
+                <button class="tf-btn" data-tf="H4">H4</button>
+                <button class="tf-btn" data-tf="D1">D1</button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div id="tradingview_xauusd_chart" class="tradingview-chart-holder"></div>
+            </div>
+          </div>
+
+          <!-- RIGHT: PRIMARY SIGNAL CARD -->
+          <div class="card glass-card signal-primary-card">
+            <div class="card-header">
+              <h3><i class="fa-solid fa-compass gold-text"></i> Rekomendasi Sinyal AI</h3>
+              <span class="confidence-badge" id="signal-confidence"><i class="fa-solid fa-shield-halved"></i> 86.5% Confidence</span>
+            </div>
+            
+            <!-- TRADING STYLE INTERACTIVE SLIDER -->
+            <div class="style-switcher-wrapper">
+              <span class="style-switcher-title"><i class="fa-solid fa-sliders gold-text"></i> Geser Gaya Trading (Otomatik Recalculate):</span>
+              <div class="style-segmented-control">
+                <button class="style-btn" data-style="SCALPING">
+                  <i class="fa-solid fa-bolt"></i> SCALPING
+                </button>
+                <button class="style-btn active" data-style="INTRADAY">
+                  <i class="fa-solid fa-scale-balanced"></i> INTRADAY
+                </button>
+                <button class="style-btn" data-style="SWING">
+                  <i class="fa-solid fa-crosshair"></i> SWING
+                </button>
+              </div>
+            </div>
+
+            <div class="card-body text-center">
+              <div class="signal-action-badge action-buy" id="signal-action">
+                <span class="action-title" id="action-text">STRONG BUY</span>
+                <span class="action-subtitle" id="strength-text">HIGH BULLISH CONVICTION</span>
+              </div>
+
+              <!-- RISK MANAGEMENT MATRIX TABLE -->
+              <div class="tpsl-matrix">
+                <div class="matrix-row">
+                  <span class="m-label"><i class="fa-solid fa-right-to-bracket cyan-text"></i> Harga Entry</span>
+                  <span class="m-value font-mono" id="val-entry">$2,415.50</span>
+                </div>
+                <div class="matrix-row row-sl">
+                  <span class="m-label"><i class="fa-solid fa-circle-stop red-text"></i> Stop Loss (SL)</span>
+                  <div class="m-val-group">
+                    <span class="m-value font-mono red-text" id="val-sl">$2,409.50</span>
+                    <span class="m-sub font-mono" id="val-sl-pips">(60 pips)</span>
+                  </div>
+                </div>
+                <div class="matrix-row row-tp">
+                  <span class="m-label"><i class="fa-solid fa-flag-checkered green-text"></i> Take Profit 1 (TP1)</span>
+                  <span class="m-value font-mono green-text" id="val-tp1">$2,422.70</span>
+                </div>
+                <div class="matrix-row row-tp highlight-tp">
+                  <span class="m-label"><i class="fa-solid fa-trophy gold-text"></i> Target Utama TP2</span>
+                  <div class="m-val-group">
+                    <span class="m-value font-mono gold-text" id="val-tp2">$2,427.50</span>
+                    <span class="m-sub font-mono" id="val-tp2-pips">(120 pips)</span>
+                  </div>
+                </div>
+                <div class="matrix-row row-tp">
+                  <span class="m-label"><i class="fa-solid fa-rocket green-text"></i> Extended TP3</span>
+                  <span class="m-value font-mono green-text" id="val-tp3">$2,434.70</span>
+                </div>
+              </div>
+
+              <!-- POSITION CALCULATOR METRICS -->
+              <div class="position-calc-box">
+                <div class="calc-item">
+                  <span class="c-label">Risk-to-Reward</span>
+                  <span class="c-val gold-text" id="val-rrr">1 : 2.0</span>
+                </div>
+                <div class="calc-item">
+                  <span class="c-label">Lot Rekomendasi</span>
+                  <span class="c-val cyan-text" id="val-lot">0.03 Lot</span>
+                </div>
+                <div class="calc-item">
+                  <span class="c-label">Risiko Modal</span>
+                  <span class="c-val red-text" id="val-risk-usd">-$10.00 (1%)</span>
+                </div>
+                <div class="calc-item">
+                  <span class="c-label">Estimasi Profit TP2</span>
+                  <span class="c-val green-text" id="val-profit-usd">+$20.00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- TAB VIEW 2: WHATSAPP BOT INTEGRATION MANAGER -->
+      <!-- =================================================================== -->
+      <div class="tab-view" id="view-whatsapp">
+        <div class="view-grid-wa">
+          
+          <!-- LEFT: WHATSAPP CONFIG & NOTIFICATION TEST -->
+          <div class="card glass-card">
+            <div class="card-header">
+              <h2><i class="fa-brands fa-whatsapp whatsapp-text"></i> WhatsApp Bot AI (Notifikasi & Custom TP/SL)</h2>
+              <span class="badge whatsapp-badge"><i class="fa-solid fa-signal"></i> Active Sync</span>
+            </div>
+            <div class="card-body">
+              
+              <div class="wa-config-box">
+                <div class="form-group">
+                  <label><i class="fa-solid fa-mobile-screen whatsapp-text"></i> Nomor WhatsApp Tujuan (Format Internasional)</label>
+                  <input type="text" id="wa-phone-input" class="form-control font-mono" value="+6281234567890" placeholder="Contoh: +6281234567890">
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-6">
+                    <label><i class="fa-solid fa-circle-stop red-text"></i> Default SL Kustom (Pips)</label>
+                    <input type="number" id="wa-sl-input" class="form-control font-mono" value="40" min="10" max="200">
+                  </div>
+                  <div class="form-group col-6">
+                    <label><i class="fa-solid fa-trophy gold-text"></i> Default TP Kustom (Pips)</label>
+                    <input type="number" id="wa-tp-input" class="form-control font-mono" value="80" min="20" max="400">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="toggle-switch-label">
+                    <input type="checkbox" id="wa-auto-alert-toggle" checked>
+                    <span>Kirim Notifikasi Otomatis Sintesis Web & Sinyal ke WA</span>
+                  </label>
+                </div>
+
+                <div class="wa-btn-group">
+                  <button id="btn-save-wa-config" class="btn btn-gold"><i class="fa-solid fa-floppy-disk"></i> Simpan Pengaturan WA</button>
+                  <button id="btn-send-wa-test" class="btn btn-whatsapp"><i class="fa-brands fa-whatsapp"></i> Test Kirim Notifikasi Sintesis AI ke WA</button>
+                </div>
+              </div>
+
+              <!-- WHATSAPP COMMAND GUIDE -->
+              <div class="wa-commands-card" style="margin-top:1.5rem;">
+                <h3><i class="fa-solid fa-terminal cyan-text"></i> Perintah Kontrol WhatsApp (Ketik Langsung di WA)</h3>
+                <div class="wa-cmd-grid">
+                  <div class="cmd-item">
+                    <span class="cmd-name">!signal</span>
+                    <span class="cmd-desc">Dapatkan sinyal & sintesis AI dari semua web (ForexFactory, Bloomberg, Reuters)</span>
+                  </div>
+                  <div class="cmd-item">
+                    <span class="cmd-name">!buy sl 30 tp 60</span>
+                    <span class="cmd-desc">Rekomendasi BUY dengan batasan SL & TP kustom langsung via WA</span>
+                  </div>
+                  <div class="cmd-item">
+                    <span class="cmd-name">!sell sl 40 tp 80</span>
+                    <span class="cmd-desc">Rekomendasi SELL dengan batasan SL & TP kustom langsung via WA</span>
+                  </div>
+                  <div class="cmd-item">
+                    <span class="cmd-name">!tpsl sl 35 tp 70</span>
+                    <span class="cmd-desc">Atur default target pips SL & TP bot via chat WA</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- RIGHT: INTERACTIVE WHATSAPP COMMAND SIMULATOR TERMINAL -->
+          <div class="card glass-card wa-terminal-card">
+            <div class="card-header">
+              <h3><i class="fa-solid fa-comments whatsapp-text"></i> WhatsApp Command Simulator Terminal</h3>
+              <span class="badge time-badge"><i class="fa-solid fa-bolt"></i> Live Response</span>
+            </div>
+            <div class="card-body">
+              <p class="sim-desc">Coba ketik perintah di bawah ini untuk mensimulasikan balasan otomatis WhatsApp Bot AI:</p>
+
+              <div class="wa-chat-viewport" id="wa-chat-container">
+                <div class="chat-bubble bot-bubble">
+                  <span class="sender-name">🤖 Bot AI Trading XAUUSD</span>
+                  <p>Halo! Saya siap menerima perintah dari WhatsApp Anda. Ketik <b>!signal</b> atau <b>!buy sl 30 tp 60</b>.</p>
+                </div>
+              </div>
+
+              <div class="wa-quick-chips">
+                <button class="chip-btn" data-cmd="!signal">!signal</button>
+                <button class="chip-btn" data-cmd="!buy sl 30 tp 60">!buy sl 30 tp 60</button>
+                <button class="chip-btn" data-cmd="!sell sl 40 tp 80">!sell sl 40 tp 80</button>
+                <button class="chip-btn" data-cmd="!tpsl sl 35 tp 70">!tpsl sl 35 tp 70</button>
+                <button class="chip-btn" data-cmd="!berita">!berita</button>
+              </div>
+
+              <div class="wa-input-bar">
+                <input type="text" id="wa-cmd-input" class="form-control" placeholder="Ketik perintah (contoh: !buy sl 30 tp 60 atau !signal)...">
+                <button id="btn-send-wa-cmd" class="btn btn-whatsapp"><i class="fa-solid fa-paper-plane"></i> Kirim</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- TAB VIEW 3: PENGATURAN TP/SL & RISK MANAGEMENT CONTROL -->
+      <!-- =================================================================== -->
+      <div class="tab-view" id="view-risk">
+        <div class="view-grid-single">
+          <div class="card glass-card">
+            <div class="card-header">
+              <h2><i class="fa-solid fa-sliders gold-text"></i> Pengaturan Keuntungan & Kerugian (TP/SL & Lot Calculator)</h2>
+              <span class="badge gold-badge"><i class="fa-solid fa-shield-halved"></i> Automated Risk Engine</span>
+            </div>
+            <div class="card-body">
+              
+              <div class="risk-settings-grid">
+                <div class="risk-form-side">
+                  <div class="form-group">
+                    <label><i class="fa-solid fa-gears"></i> Mode Kalkulasi TP/SL</label>
+                    <select id="cfg-risk-mode" class="form-control">
+                      <option value="DYNAMIC_ATR" selected>Dinamis berbasis Volatilitas ATR (Direkomendasikan)</option>
+                      <option value="SUPPORT_RESISTANCE">Berbasis Support & Resistance Terdekat</option>
+                      <option value="FIXED_PIPS">Jarak Fixed Pips Kustom</option>
+                    </select>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group col-6">
+                      <label><i class="fa-solid fa-scale-balanced"></i> Kustom Rasio Risk:Reward</label>
+                      <select id="cfg-rrr" class="form-control">
+                        <option value="">(Otomatis Mengikuti Gaya Trading)</option>
+                        <option value="1.5">1 : 1.5 (Scalping Fast)</option>
+                        <option value="2.0">1 : 2.0 (Intraday Standard)</option>
+                        <option value="3.0">1 : 3.0 (Swing Aggressive)</option>
+                        <option value="4.0">1 : 4.0 (Trend Following)</option>
+                      </select>
+                    </div>
+                    <div class="form-group col-6" id="group-fixed-pips" style="display:none;">
+                      <label><i class="fa-solid fa-ruler"></i> SL Fixed (Pips)</label>
+                      <input type="number" id="cfg-sl-pips" class="form-control" value="40" min="10" max="300">
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group col-6">
+                      <label><i class="fa-solid fa-wallet"></i> Modal Akun ($)</label>
+                      <input type="number" id="cfg-equity" class="form-control" value="1000" min="50" step="50">
+                    </div>
+                    <div class="form-group col-6">
+                      <label><i class="fa-solid fa-percent"></i> Toleransi Risiko / Trade</label>
+                      <select id="cfg-risk-pct" class="form-control">
+                        <option value="0.5">0.5% (Sangat Konservatif)</option>
+                        <option value="1.0" selected>1.0% (Standar Ideal)</option>
+                        <option value="2.0">2.0% (Sedang)</option>
+                        <option value="3.0">3.0% (Tinggi)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <button id="btn-apply-risk" class="btn btn-gold btn-block" style="margin-top:1rem;">
+                    <i class="fa-solid fa-floppy-disk"></i> Terapkan & Rekalkulasi Sinyal TP/SL
+                  </button>
+                </div>
+
+                <!-- RISK RULES GUIDE -->
+                <div class="risk-info-side">
+                  <h3><i class="fa-solid fa-book-bookmark cyan-text"></i> Panduan Eksekusi & Trailing Stop AI</h3>
+                  <ul class="risk-rules-list">
+                    <li><i class="fa-solid fa-check-circle green-text"></i> <b>Break-Even Automation</b>: Geser Stop Loss ke harga Entry setelah Target TP1 tersentuh.</li>
+                    <li><i class="fa-solid fa-check-circle green-text"></i> <b>Partial Profit Take</b>: Tutup 50% lot di TP1, biarkan sisanya mengejar TP2 & TP3.</li>
+                    <li><i class="fa-solid fa-shield-cat gold-text"></i> <b>Volatilitas ATR Protection</b>: Jarak SL secara otomatis melebar pada saat rilis berita NFP / CPI untuk mencegah stop out prematur.</li>
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- TAB VIEW 4: RADAR BERITA MACRO & FOREXFACTORY -->
+      <!-- =================================================================== -->
+      <div class="tab-view" id="view-news">
+        <div class="view-grid-single">
+          <div class="card glass-card">
+            <div class="card-header">
+              <h2><i class="fa-solid fa-newspaper gold-text"></i> Fundamental & Radar Berita ForexFactory Macro</h2>
+              <span class="sentiment-badge" id="news-sentiment-badge">Sentimen: +35 (Bullish Gold)</span>
+            </div>
+            <div class="card-body">
+              
+              <div class="sentiment-meter-container">
+                <div class="meter-labels">
+                  <span class="bear-text">Sangat Bearish Gold (-100)</span>
+                  <span class="neutral-text">Netral (0)</span>
+                  <span class="bull-text">Sangat Bullish Gold (+100)</span>
+                </div>
+                <div class="meter-track">
+                  <div class="meter-pointer" id="sentiment-pointer" style="left: 67.5%;"></div>
+                </div>
+              </div>
+
+              <!-- FOREXFACTORY HIGH IMPACT SECTION -->
+              <div class="ff-calendar-box" style="margin-bottom:1.5rem;">
+                <h3><i class="fa-solid fa-calendar-day red-text"></i> ForexFactory High-Impact Calendar (Red Folder USD Events)</h3>
+                <div class="ff-events-list" id="ff-events-container">
+                  <div class="ff-event-card">
+                    <span class="ff-badge red">🔴 HIGH IMPACT</span>
+                    <span class="ff-title">US Core CPI Inflation Rate (YoY/MoM)</span>
+                    <span class="ff-sub">ForexFactory Impact: Extreme Volatility Risk for XAUUSD</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- NEWS FEED -->
+              <h3><i class="fa-solid fa-globe cyan-text"></i> Market News & Headlines</h3>
+              <div class="news-list-full" id="news-feed-container" style="margin-top:0.5rem;">
+                <div class="news-item-placeholder">Memuat berita terkini...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- TAB VIEW 5: TECHNICAL RADAR & AI LEARNING LAB -->
+      <!-- =================================================================== -->
+      <div class="tab-view" id="view-learning">
+        <div class="view-grid-learning">
+          
+          <!-- LEFT: TECHNICAL RADAR -->
+          <div class="card glass-card tech-card">
+            <div class="card-header">
+              <h3><i class="fa-solid fa-microchip cyan-text"></i> Technical Indicators Radar</h3>
+              <span class="score-pill" id="tech-score-pill">Skor: +45 (Bullish)</span>
+            </div>
+            <div class="card-body grid-2">
+              <div class="indicator-stat">
+                <span class="stat-label">RSI (14)</span>
+                <span class="stat-value" id="val-rsi">58.4</span>
+                <div class="progress-bar-wrap">
+                  <div class="progress-bar cyan-fill" id="bar-rsi" style="width: 58.4%;"></div>
+                </div>
+              </div>
+              <div class="indicator-stat">
+                <span class="stat-label">MACD (12,26,9)</span>
+                <span class="stat-value green-text" id="val-macd">+1.25 (Histogram +0.45)</span>
+                <span class="stat-sub">Momentum Bullish Cross</span>
+              </div>
+              <div class="indicator-stat">
+                <span class="stat-label">ATR Volatilitas (14)</span>
+                <span class="stat-value" id="val-atr">$3.85 / candle</span>
+                <span class="stat-sub">Volatilitas Pasar Sedang</span>
+              </div>
+              <div class="indicator-stat">
+                <span class="stat-label">EMAs Trend Alignment</span>
+                <span class="stat-value gold-text" id="val-ema">Harga > EMA 20 & 50</span>
+                <span class="stat-sub">Above EMA 200 Long-Term</span>
+              </div>
+            </div>
+            <div class="pattern-chips" id="pattern-container" style="padding: 0 1.25rem 1.25rem 1.25rem;">
+              <span class="chip chip-bullish"><i class="fa-solid fa-check"></i> Bullish Engulfing Pattern</span>
+              <span class="chip chip-neutral"><i class="fa-solid fa-layer-group"></i> Support Pivot $2,408.00</span>
+            </div>
+          </div>
+
+          <!-- RIGHT: AI ADAPTIVE LEARNING -->
+          <div class="card glass-card learning-card">
+            <div class="card-header">
+              <h3><i class="fa-solid fa-graduation-cap gold-text"></i> AI Adaptive Weight Learning</h3>
+              <button class="btn btn-sm btn-outline" id="btn-trigger-backtest"><i class="fa-solid fa-play"></i> Latih Model</button>
+            </div>
+            <div class="card-body">
+              <p class="learning-desc">Bobot indikator disesuaikan secara otomatis berdasarkan gaya trading & histori akurasi.</p>
+              
+              <div class="weight-item" style="margin-bottom:0.75rem;">
+                <div class="weight-label"><span>Analisis Teknikal</span><span id="weight-tech-pct">50%</span></div>
+                <div class="progress-bar-wrap"><div class="progress-bar cyan-fill" id="bar-weight-tech" style="width: 50%;"></div></div>
+              </div>
+
+              <div class="weight-item" style="margin-bottom:0.75rem;">
+                <div class="weight-label"><span>Fundamental & Berita Macro</span><span id="weight-fund-pct">35%</span></div>
+                <div class="progress-bar-wrap"><div class="progress-bar gold-fill" id="bar-weight-fund" style="width: 35%;"></div></div>
+              </div>
+
+              <div class="weight-item" style="margin-bottom:0.75rem;">
+                <div class="weight-label"><span>Price Action & Pattern</span><span id="weight-pa-pct">15%</span></div>
+                <div class="progress-bar-wrap"><div class="progress-bar purple-fill" id="bar-weight-pa" style="width: 15%;"></div></div>
+              </div>
+
+              <div class="backtest-summary-box" id="backtest-result-box" style="margin-top:1rem;">
+                <i class="fa-solid fa-circle-check green-text"></i> <b>Model Readiness</b>: Status Optimal (75.0% Win Rate pada 24 sampel trade).
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- AI REASONING EXPLANATION DRAWER -->
+        <div class="card glass-card reasoning-card" style="margin-top:1.25rem;">
+          <div class="card-header">
+            <h3><i class="fa-solid fa-brain cyan-text"></i> Alasan & Pertimbangan AI</h3>
+          </div>
+          <div class="card-body">
+            <ul class="reasoning-list" id="ai-reasoning-list">
+              <li>Memuat analisis komprehensif AI...</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- BACKTEST MODAL -->
+  <div class="modal-overlay" id="modal-backtest">
+    <div class="modal-content glass-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-flask gold-text"></i> Simulation & Training Lab (Backtest)</h3>
+        <button class="close-modal" id="btn-close-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Jalankan simulasi pengujian pada dataset historis XAUUSD untuk melatih model AI dan mengoptimalkan akurasi bobot TP/SL.</p>
+        
+        <div id="modal-sim-status" class="sim-status-box">
+          Tekan tombol di bawah untuk memulai simulasi pengujian.
+        </div>
+
+        <div class="sim-stats-grid" id="sim-stats-container" style="display:none;">
+          <div class="sim-stat-box">
+            <span class="label">Total Trade Simulated</span>
+            <span class="value" id="sim-val-trades">0</span>
+          </div>
+          <div class="sim-stat-box">
+            <span class="label">Win Rate AI</span>
+            <span class="value green-text" id="sim-val-winrate">0%</span>
+          </div>
+          <div class="sim-stat-box">
+            <span class="label">Net Profit (PnL)</span>
+            <span class="value gold-text" id="sim-val-pnl">$0.00</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-gold" id="btn-start-sim-run"><i class="fa-solid fa-bolt"></i> Eksekusi Training AI</button>
+        <button class="btn btn-outline" id="btn-simulate-trade-win"><i class="fa-solid fa-circle-plus"></i> Simulasi Signal Win (+PnL)</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="src/app.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "name": "botaitradingpintar",
+  "version": "1.0.0",
+  "description": "Smart AI Trading Bot for XAUUSD (Gold vs US Dollar) with Technical, Fundamental, News Sentiment Analysis, TP/SL Risk Control & Self-Learning Engine",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "cheerio": "^1.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "technicalindicators": "^3.1.0"
+  }
+}
